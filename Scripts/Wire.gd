@@ -64,7 +64,7 @@ func update_mat():
 func _process(delta):
 	if(self.p1 != null):
 		update_position()
-		print("p1: %d p2: %d" % [self.p1.charge, self.p2.charge])
+		#print("p1: %d p2: %d" % [self.p1.charge, self.p2.charge])
 		charge = int(self.p1.charge>0 and self.p2.charge>0)
 		update_mat()
 	if(set_once and self.p1.connection_exists(self.p2) == false):

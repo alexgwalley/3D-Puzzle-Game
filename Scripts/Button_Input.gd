@@ -9,13 +9,16 @@ var onMat = load("res://Materials/wire_on_material.tres")
 var offMat = load("res://Materials/wire_off_material.tres")
 
 func set_charge(caller, a: int, depth=0):
-	if(a <= 0):
-		self.charge = 0
-	else:
-		self.charge = a
 	depth += 1	
 	if(depth > 50 or caller != self):
 		return
+		
+	if(a <= 0):
+		self.charge = 0
+	else:
+		self.charge += a
+	print("Button Input Charge: %d" % self.charge)
+	
 	if(outputConnection != null):
 		outputConnection.set_charge(self, a, depth)
 	handle_material()
@@ -36,16 +39,17 @@ func handle_connection(conn, connPath, parent=true) -> int:
 		return 0
 	outputConnection = conn
 	outputConnectionPath = connPath	
-	set_charge(self, charge)
+	set_charge(self, int(self.charge>0))
 	return 1
 	
 func handle_connections_dead():
 	if(not get_parent().get_parent().find_node("Wire Stuff").find_node("Wire Holders").has_node(outputConnectionPath) and
 	   not get_parent().get_parent().find_node("Gates").has_node(outputConnectionPath)):
-			outputConnection = null
+			remove_connection(outputConnection)
 	
 func remove_connection(conn):
 	if(outputConnection == conn):
+		set_charge(self, -1)
 		outputConnection = null
 		
 func handle_material():
