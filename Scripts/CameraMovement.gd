@@ -29,13 +29,13 @@ var prevID = Vector3(0, 0, 0)
 var selected = null
 
 #Placing Blocks
-onready var OR_Gate = preload("res://Scenes/AND_Gate.tscn")
+onready var OR_Gate = preload("res://Scenes/GATE_Scenes/AND_Gate.tscn")
 
 #Wire creation
 var selected_wire_holder = null
 var current_wire = null
-onready var wire = preload("res://Scenes/Wire.tscn")
-onready var wire_holder = preload("res://Scenes/Wire Holder.tscn")
+onready var wire = preload("res://Scenes/Wire and Interaction/Wire.tscn")
+onready var wire_holder = preload("res://Scenes/Wire and Interaction/Wire Holder.tscn")
 
 
 func _ready():
