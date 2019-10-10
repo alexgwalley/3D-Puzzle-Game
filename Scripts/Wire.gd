@@ -62,9 +62,9 @@ func update_mat():
 		self.get_node("CSGMesh").mesh.material.albedo_color = offMat.albedo_color
 	
 func _process(delta):
-	if(p1 != null):
+	if(p1 != null and p2 != null):
 		update_position()
-		charge = p1.charge
+		charge = int(p1.charge==1 and p2.charge==1)
 		update_mat()
 	if(set_once and p1.connection_exists(p2) == false):
 		p1.remove_connection(p2)

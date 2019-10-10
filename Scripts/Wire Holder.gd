@@ -99,8 +99,7 @@ func remove_connection(conn):
 
 func set_charge(caller, c:int, depth=0):
 	depth += 1
-	print(depth)
-	if(depth > 10):
+	if(depth > 30):
 		return
 	#Look for a loop ===========================
 	self.charge = c

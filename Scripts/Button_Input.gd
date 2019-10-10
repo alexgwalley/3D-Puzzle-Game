@@ -1,6 +1,5 @@
 extends "res://Scripts/TestCube.gd"
 
-
 var charge = 0
 var outputConnection = null
 var outputConnectionPath = ""
@@ -11,8 +10,8 @@ var offMat = load("res://Materials/wire_off_material.tres")
 
 func set_charge(caller, a: int, depth=0):
 	charge = a
-	depth += 1
-	if(depth > 50):
+	depth += 1	
+	if(depth > 50 or caller != self):
 		return
 	if(outputConnection != null and depth < 100):
 		outputConnection.set_charge(self, charge, depth)
@@ -24,6 +23,8 @@ func connection_exists(conn):
 	return false
 		
 func handle_connection(conn, connPath, parent=true) -> int:
+	if(parent == false):
+		return -1
 	if(conn == outputConnection):
 		outputConnection = null
 		return -1
@@ -41,6 +42,7 @@ func handle_connections_dead():
 func remove_connection(conn):
 	if(outputConnection == conn):
 		outputConnection = null
+		
 func handle_material():
 	if(charge == 1):
 		self.get_node("CSGMesh").mesh.material.albedo_color = onMat.albedo_color

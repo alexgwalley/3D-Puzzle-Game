@@ -225,6 +225,8 @@ func _input(event):
 				child.handle_connections_dead()
 			for child in get_parent().get_node("Inputs").get_children():
 				child.handle_connections_dead()
+			for child in get_parent().get_node("Gates").get_children():
+				child.handle_connections_dead()
 			
 		if(mode == WIRE_MODE):
 			current_wire.get_parent().remove_child(current_wire)
