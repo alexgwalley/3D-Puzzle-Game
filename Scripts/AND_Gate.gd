@@ -1,13 +1,24 @@
-extends Node
+extends "res://Scripts/Gate.gd"
 
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
+onready var mat = get_node("CSGMesh").mesh.surface_get_material(0)
+onready var light = get_node("SpotLight")
+export var onCol : Color;
+export var offCol : Color;
 
-# Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
+	mat.set_shader_param("albedo", offCol)
+	mat.set_shader_param("emission", offCol)
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+func update_output():
+	if(inputConnection1 != null and inputConnection2 != null):
+		if(inputConnection1.charge == 1 and inputConnection2.charge == 1):
+			charge = 1
+			mat.set_shader_param("albedo", onCol)
+			mat.set_shader_param("emission", onCol)
+			light.light_color = onCol
+		else:
+			charge = 0
+			mat.set_shader_param("albedo", offCol)
+			mat.set_shader_param("emission", offCol)
+			light.light_color = offCol
+	pass_charge()

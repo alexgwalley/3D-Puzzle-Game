@@ -29,7 +29,7 @@ var prevID = Vector3(0, 0, 0)
 var selected = null
 
 #Placing Blocks
-onready var OR_Gate = preload("res://Scenes/OR_Gate.tscn")
+onready var OR_Gate = preload("res://Scenes/AND_Gate.tscn")
 
 #Wire creation
 var selected_wire_holder = null
@@ -222,6 +222,8 @@ func _input(event):
 			for child in get_parent().find_node("Wire Stuff").find_node("Wires").get_children():
 				child.handle_parents()
 			for child in get_parent().find_node("Wire Stuff").find_node("Wire Holders").get_children():
+				child.handle_connections_dead()
+			for child in get_parent().get_node("Inputs").get_children():
 				child.handle_connections_dead()
 			
 		if(mode == WIRE_MODE):

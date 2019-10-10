@@ -43,16 +43,20 @@ func connection_exists(conn):
 	return false
 
 func handle_connections_dead():
-	if(not get_parent().get_parent().get_parent().find_node("Gates").has_node(connection1Path)):
+	if(not get_parent().get_parent().get_parent().find_node("Gates").has_node(connection1Path) and
+	   not get_parent().get_parent().get_parent().find_node("Wire Stuff").find_node("Wire Holders").has_node(connection4Path)):
 		remove_connection(connection1)
 		print("removed connection")
-	if(not get_parent().get_parent().get_parent().find_node("Gates").has_node(connection2Path)):
+	if(not get_parent().get_parent().get_parent().find_node("Gates").has_node(connection2Path) and
+	   not get_parent().get_parent().get_parent().find_node("Wire Stuff").find_node("Wire Holders").has_node(connection4Path)):
 		remove_connection(connection2)
 		print("removed connection")
-	if(not get_parent().get_parent().get_parent().find_node("Gates").has_node(connection3Path)):
+	if(not get_parent().get_parent().get_parent().find_node("Gates").has_node(connection3Path) and
+	   not get_parent().get_parent().get_parent().find_node("Wire Stuff").find_node("Wire Holders").has_node(connection4Path)):
 		remove_connection(connection3)
 		print("removed connection")
-	if(not get_parent().get_parent().get_parent().find_node("Gates").has_node(connection4Path)):
+	if(not get_parent().get_parent().get_parent().find_node("Gates").has_node(connection4Path) and
+	   not get_parent().get_parent().get_parent().find_node("Wire Stuff").find_node("Wire Holders").has_node(connection4Path)):
 		remove_connection(connection4)
 		print("removed connection")
 

@@ -45,11 +45,12 @@ func make_output_connection(conn) -> int:
 	return 0
 
 
-func set_charge(caller, charge, depth):
+func set_charge(caller, charge, depth=0):
 	depth += 1
 	if(depth > 50):
 		return
 	update_output()
+	pass_charge()
 
 func pass_charge():
 	if(outputConnection != null):

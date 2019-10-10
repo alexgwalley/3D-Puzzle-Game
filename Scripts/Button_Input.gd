@@ -3,6 +3,7 @@ extends "res://Scripts/TestCube.gd"
 
 var charge = 0
 var outputConnection = null
+var outputConnectionPath = ""
 
 #Materials
 var onMat = load("res://Materials/wire_on_material.tres")
@@ -29,8 +30,17 @@ func handle_connection(conn, connPath, parent=true) -> int:
 	if(outputConnection != null):
 		return 0
 	outputConnection = conn
+	outputConnectionPath = connPath	
 	return 1
-
+	
+func handle_connections_dead():
+	if(not get_parent().get_parent().find_node("Wire Stuff").find_node("Wire Holders").has_node(outputConnectionPath) and
+	   not get_parent().get_parent().find_node("Gates").has_node(outputConnectionPath)):
+			outputConnection = null
+	
+func remove_connection(conn):
+	if(outputConnection == conn):
+		outputConnection = null
 func handle_material():
 	if(charge == 1):
 		self.get_node("CSGMesh").mesh.material.albedo_color = onMat.albedo_color
