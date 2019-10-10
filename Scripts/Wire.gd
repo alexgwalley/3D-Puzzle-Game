@@ -23,10 +23,10 @@ func set_height(h:float):
 	self.get_node("CSGMesh").scale = Vector3(0.5, 0.5, 2*h)
 	
 func set_parents(a, aPath, b, bPath):
-	p1 = a
-	p1Path = aPath
-	p2 = b 
-	p2Path = bPath
+	self.p1 = a
+	self.p1Path = aPath
+	self.p2 = b 
+	self.p2Path = bPath
 	set_once = true
 
 func handle_parents():
@@ -62,14 +62,14 @@ func update_mat():
 		self.get_node("CSGMesh").mesh.material.albedo_color = offMat.albedo_color
 	
 func _process(delta):
-	if(p1 != null):
+	if(self.p1 != null):
 		update_position()
-		#print("p1: %d p2: %d" % [p1.charge, p2.charge])
-		charge = p2.charge
+		print("p1: %d p2: %d" % [self.p1.charge, self.p2.charge])
+		charge = int(self.p1.charge>0 and self.p2.charge>0)
 		update_mat()
-	if(set_once and p1.connection_exists(p2) == false):
-		p1.remove_connection(p2)
-		p2.remove_connection(p1)
+	if(set_once and self.p1.connection_exists(self.p2) == false):
+		self.p1.remove_connection(self.p2)
+		self.p2.remove_connection(self.p1)
 		get_parent().remove_child(self)
 	
 		

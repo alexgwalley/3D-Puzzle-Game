@@ -10,9 +10,9 @@ var offMat = load("res://Materials/wire_off_material.tres")
 
 func set_charge(caller, a: int, depth=0):
 	if(a <= 0):
-		charge = 0
+		self.charge = 0
 	else:
-		charge = a
+		self.charge = a
 	depth += 1	
 	if(depth > 50 or caller != self):
 		return
@@ -49,10 +49,10 @@ func remove_connection(conn):
 		outputConnection = null
 		
 func handle_material():
-	if(charge > 0):
+	if(self.charge > 0):
 		self.get_node("CSGMesh").mesh.material.albedo_color = onMat.albedo_color
 		#print("updating material on")
-	if(charge == 0):
+	if(self.charge == 0):
 		self.get_node("CSGMesh").mesh.material.albedo_color = offMat.albedo_color
 		#print("updating material off")
 		

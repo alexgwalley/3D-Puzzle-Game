@@ -22,4 +22,4 @@ func update_output():
 			mat.set_shader_param("albedo", offCol)
 			mat.set_shader_param("emission", offCol)
 			light.light_color = offCol
-	pass_charge()
+		pass_charge()

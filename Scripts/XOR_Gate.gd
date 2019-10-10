@@ -6,4 +6,4 @@ func update_output():
 			charge = 1
 		else:
 			charge = 0
-	pass_charge()
+		pass_charge()

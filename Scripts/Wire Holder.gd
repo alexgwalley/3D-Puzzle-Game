@@ -46,22 +46,18 @@ func handle_connections_dead():
 	if(not get_parent().get_parent().get_parent().find_node("Gates").has_node(connection1Path) and
 	   not get_parent().get_parent().get_parent().find_node("Wire Stuff").find_node("Wire Holders").has_node(connection1Path)):
 		remove_connection(connection1)
-		print("removed connection")
 	if(not get_parent().get_parent().get_parent().find_node("Gates").has_node(connection2Path) and
 	   not get_parent().get_parent().get_parent().find_node("Wire Stuff").find_node("Wire Holders").has_node(connection2Path)):
 		remove_connection(connection2)
-		print("removed connection")
 	if(not get_parent().get_parent().get_parent().find_node("Gates").has_node(connection3Path) and
 	   not get_parent().get_parent().get_parent().find_node("Wire Stuff").find_node("Wire Holders").has_node(connection3Path)):
 		remove_connection(connection3)
-		print("removed connection")
 	if(not get_parent().get_parent().get_parent().find_node("Gates").has_node(connection4Path) and
 	   not get_parent().get_parent().get_parent().find_node("Wire Stuff").find_node("Wire Holders").has_node(connection4Path)):
-		remove_connection(connection4)
-		print("removed connection")
+		remove_connection(connection4) 
 
 func add_connection(conn, connPath) -> bool:
-	if(number_of_connections + 1 > max_connections and not conn.is_in_group("Purely Output")):
+	if(number_of_connections + 1 > max_connections):
 		return false 
 	number_of_connections += 1
 	if(number_of_connections == 1):
@@ -76,10 +72,12 @@ func add_connection(conn, connPath) -> bool:
 	if(number_of_connections == 4):
 		connection4 = conn
 		connection4Path = connPath
-	set_charge(self, int(charge>0))
+	set_charge(self, int(conn.charge>0))
 	return true
 	
 func remove_connection(conn):
+	if(conn.is_in_group("Purely Output")):
+		return false
 	if(conn == connection1):
 		connection1 = null
 		connection1Path = ""
@@ -104,7 +102,7 @@ func set_charge(caller, c:int, depth=0):
 	if(depth > 30):
 		return
 	self.charge += c	
-
+	print(self.charge)
 	if(connection1 != null and connection1 != caller):
 		connection1.set_charge(self, c, depth)
 	if(connection2 != null and connection2 != caller):

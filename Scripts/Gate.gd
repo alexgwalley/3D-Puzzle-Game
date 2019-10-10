@@ -9,6 +9,11 @@ var charge = 0
 var outputConnection = null
 var outputConnectionPath = ""
 
+func _ready():
+	var m = get_node("CSGMesh").mesh.duplicate(true)
+	var mat = get_node("CSGMesh").mesh.surface_get_material(0).duplicate()
+	get_node("CSGMesh").mesh = m
+	get_node("CSGMesh").mesh.surface_set_material(0, mat)
 
 func handle_connection(conn, connPath, parent=false) -> int:
 	if(connection_exists(conn)):

@@ -12,12 +12,13 @@ func _ready():
 func update_output():
 	if(inputConnection1 != null and inputConnection2 != null):
 		if(inputConnection1.charge > 0 and inputConnection2.charge > 0):
-			charge = 1
+			self.charge = 1
 			mat.set_shader_param("albedo", onCol)
 			mat.set_shader_param("emission", onCol)
+			print(charge)
 			light.light_color = onCol
 		else:
-			charge = 0
+			self.charge = 0
 			mat.set_shader_param("albedo", offCol)
 			mat.set_shader_param("emission", offCol)
 			light.light_color = offCol
