@@ -61,7 +61,7 @@ func handle_connections_dead():
 		print("removed connection")
 
 func add_connection(conn, connPath) -> bool:
-	if(number_of_connections + 1 > max_connections):
+	if(number_of_connections + 1 > max_connections and not conn.is_in_group("Purely Output")):
 		return false 
 	number_of_connections += 1
 	if(number_of_connections == 1):
@@ -96,7 +96,6 @@ func remove_connection(conn):
 		connection4 = null
 		connection4Path = ""
 		number_of_connections -= 1
-	print("asdkaksd")
 	set_charge(self, -1)
 	
 
@@ -104,10 +103,7 @@ func set_charge(caller, c:int, depth=0):
 	depth += 1
 	if(depth > 30):
 		return
-	#Look for a loop ===========================
 	self.charge += c	
-	print(self.charge)
-	#print("recieved charge %d " % self.charge)
 
 	if(connection1 != null and connection1 != caller):
 		connection1.set_charge(self, c, depth)

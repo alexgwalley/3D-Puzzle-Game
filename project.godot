@@ -134,6 +134,7 @@ create_wire_holder={
 3d_physics/layer_1="Interactable"
 3d_physics/layer_2="Non-Interactable"
 3d_physics/layer_3="Takes-Space"
+3d_physics/layer_20="Purely-Output"
 
 [rendering]
 
