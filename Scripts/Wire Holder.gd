@@ -26,7 +26,7 @@ func _ready():
 	
 func handle_connection(conn, connPath, parent=false) -> int:
 	if(conn == self):
-		return 1
+		return 0
 	if(connection_exists(conn)):
 		remove_connection(conn)
 		return -1
@@ -44,15 +44,15 @@ func connection_exists(conn):
 
 func handle_connections_dead():
 	if(not get_parent().get_parent().get_parent().find_node("Gates").has_node(connection1Path) and
-	   not get_parent().get_parent().get_parent().find_node("Wire Stuff").find_node("Wire Holders").has_node(connection4Path)):
+	   not get_parent().get_parent().get_parent().find_node("Wire Stuff").find_node("Wire Holders").has_node(connection1Path)):
 		remove_connection(connection1)
 		print("removed connection")
 	if(not get_parent().get_parent().get_parent().find_node("Gates").has_node(connection2Path) and
-	   not get_parent().get_parent().get_parent().find_node("Wire Stuff").find_node("Wire Holders").has_node(connection4Path)):
+	   not get_parent().get_parent().get_parent().find_node("Wire Stuff").find_node("Wire Holders").has_node(connection2Path)):
 		remove_connection(connection2)
 		print("removed connection")
 	if(not get_parent().get_parent().get_parent().find_node("Gates").has_node(connection3Path) and
-	   not get_parent().get_parent().get_parent().find_node("Wire Stuff").find_node("Wire Holders").has_node(connection4Path)):
+	   not get_parent().get_parent().get_parent().find_node("Wire Stuff").find_node("Wire Holders").has_node(connection3Path)):
 		remove_connection(connection3)
 		print("removed connection")
 	if(not get_parent().get_parent().get_parent().find_node("Gates").has_node(connection4Path) and
@@ -76,6 +76,7 @@ func add_connection(conn, connPath) -> bool:
 	if(number_of_connections == 4):
 		connection4 = conn
 		connection4Path = connPath
+	set_charge(self, int(charge>0))
 	return true
 	
 func remove_connection(conn):
@@ -95,6 +96,8 @@ func remove_connection(conn):
 		connection4 = null
 		connection4Path = ""
 		number_of_connections -= 1
+	print("asdkaksd")
+	set_charge(self, -1)
 	
 
 func set_charge(caller, c:int, depth=0):
@@ -102,7 +105,8 @@ func set_charge(caller, c:int, depth=0):
 	if(depth > 30):
 		return
 	#Look for a loop ===========================
-	self.charge = c
+	self.charge += c	
+	print(self.charge)
 	#print("recieved charge %d " % self.charge)
 
 	if(connection1 != null and connection1 != caller):
@@ -115,7 +119,7 @@ func set_charge(caller, c:int, depth=0):
 		connection4.set_charge(self, c, depth)
 
 func handle_material():
-	if(self.charge == 1):
+	if(self.charge > 0):
 		get_node("Mesh").mesh.material.albedo_color = Color(1, 1, 0, 1)
 	if(self.charge == 0):
 		get_node("Mesh").mesh.material.albedo_color = Color(0, 0, 0, 1)

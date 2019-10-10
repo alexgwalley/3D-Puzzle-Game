@@ -9,12 +9,15 @@ var onMat = load("res://Materials/wire_on_material.tres")
 var offMat = load("res://Materials/wire_off_material.tres")
 
 func set_charge(caller, a: int, depth=0):
-	charge = a
+	if(a <= 0):
+		charge = 0
+	else:
+		charge = a
 	depth += 1	
 	if(depth > 50 or caller != self):
 		return
-	if(outputConnection != null and depth < 100):
-		outputConnection.set_charge(self, charge, depth)
+	if(outputConnection != null):
+		outputConnection.set_charge(self, a, depth)
 	handle_material()
 		
 func connection_exists(conn):
@@ -24,7 +27,8 @@ func connection_exists(conn):
 		
 func handle_connection(conn, connPath, parent=true) -> int:
 	if(parent == false):
-		return -1
+		print("rejected")
+		return 0
 	if(conn == outputConnection):
 		outputConnection = null
 		return -1
@@ -32,6 +36,7 @@ func handle_connection(conn, connPath, parent=true) -> int:
 		return 0
 	outputConnection = conn
 	outputConnectionPath = connPath	
+	set_charge(self, charge)
 	return 1
 	
 func handle_connections_dead():
@@ -44,7 +49,7 @@ func remove_connection(conn):
 		outputConnection = null
 		
 func handle_material():
-	if(charge == 1):
+	if(charge > 0):
 		self.get_node("CSGMesh").mesh.material.albedo_color = onMat.albedo_color
 		#print("updating material on")
 	if(charge == 0):
@@ -64,4 +69,4 @@ func _on_Area_body_entered(body):
 		set_charge(self, 1)
 func _on_Area_body_exited(body):
 	if(body != self):
-		set_charge(self, 0)
+		set_charge(self, -1)

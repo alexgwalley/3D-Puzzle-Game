@@ -56,15 +56,16 @@ func set_position(pos1:Vector3, pos2:Vector3):
 	look_at_from_position(desiredPos, transform.origin+dir, Vector3.UP)
 	
 func update_mat():
-	if(charge == 1):
+	if(charge > 0):
 		self.get_node("CSGMesh").mesh.material.albedo_color = onMat.albedo_color
 	if(charge == 0):
 		self.get_node("CSGMesh").mesh.material.albedo_color = offMat.albedo_color
 	
 func _process(delta):
-	if(p1 != null and p2 != null):
+	if(p1 != null):
 		update_position()
-		charge = int(p1.charge==1 and p2.charge==1)
+		#print("p1: %d p2: %d" % [p1.charge, p2.charge])
+		charge = p2.charge
 		update_mat()
 	if(set_once and p1.connection_exists(p2) == false):
 		p1.remove_connection(p2)

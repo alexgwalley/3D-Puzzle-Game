@@ -264,7 +264,7 @@ func _input(event):
 			obj.set_charge(obj, 1)
 			
 	if(Input.is_action_just_released("select") and mode == INTERACT_MODE and selected != null):
-		selected.set_charge(selected, 0)
+		selected.set_charge(selected, -1)
 		selected = null
 			
 	
