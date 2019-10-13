@@ -9,7 +9,8 @@ func _ready():
 	mat.set_shader_param("albedo", offCol)
 	mat.set_shader_param("emission", offCol)
 
-func update_output():
+func update_charge(depth = 0):
+	updated = true
 	if(inputConnection1 != null and inputConnection2 != null):
 		if(inputConnection1.charge > 0 and inputConnection2.charge > 0):
 			self.charge = 1

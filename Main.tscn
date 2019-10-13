@@ -44,12 +44,14 @@ script = ExtResource( 2 )
 transform = Transform( -4.37114e-008, 0.707107, -0.707107, 0, 0.707107, 0.707107, 1, 3.09086e-008, -3.09086e-008, 7.611, 11.148, 20.2 )
 
 [node name="Selection GUI" type="Control" parent="."]
+editor/display_folded = true
 margin_right = 1024.0
 margin_bottom = 600.0
 
 [node name="Counter" parent="Selection GUI" instance=ExtResource( 3 )]
 
 [node name="Mouse" type="Control" parent="."]
+editor/display_folded = true
 margin_right = 12.0
 margin_bottom = 12.0
 rect_min_size = Vector2( 10, 10 )
@@ -67,6 +69,7 @@ transform = Transform( -0.994743, -0.00810366, -0.102083, -0.0714807, 0.768775, 
 shadow_enabled = true
 
 [node name="Wire Stuff" type="Spatial" parent="."]
+editor/display_folded = true
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0350494, -0.0220242, -0.00214005 )
 
 [node name="Wire Holders" type="Spatial" parent="Wire Stuff"]
@@ -75,9 +78,16 @@ script = ExtResource( 4 )
 [node name="Wires" type="Spatial" parent="Wire Stuff"]
 
 [node name="Inputs" type="Spatial" parent="."]
+editor/display_folded = true
 
 [node name="Button_Input" parent="Inputs" instance=ExtResource( 5 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 15.026, 1, 5.1454 )
 
 [node name="Button_Input2" parent="Inputs" instance=ExtResource( 5 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 21.8123, 1, 5.1454 )
+
+[node name="Mode" type="Control" parent="."]
+margin_left = 708.176
+margin_top = 548.166
+margin_right = 1008.18
+margin_bottom = 588.166

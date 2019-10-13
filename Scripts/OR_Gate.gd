@@ -10,7 +10,11 @@ func _ready():
 	mat.set_shader_param("albedo", offCol)
 	mat.set_shader_param("emission", offCol)
 
-func update_output():
+func update_charge(depth = 0):
+	depth += 1
+	if(depth > 50):
+		return
+	updated = true
 	if(inputConnection1 != null and inputConnection2 != null):
 		if(inputConnection1.charge > 0 or inputConnection2.charge > 0):
 			charge = 1
@@ -22,4 +26,5 @@ func update_output():
 			mat.set_shader_param("albedo", offCol)
 			mat.set_shader_param("emission", offCol)
 			light.light_color = offCol
-		pass_charge()
+	if(outputConnection != null and not outputConnection.updated):
+		outputConnection.update_charge(depth)

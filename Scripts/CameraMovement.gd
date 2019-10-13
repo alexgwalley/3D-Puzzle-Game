@@ -29,7 +29,8 @@ var prevID = Vector3(0, 0, 0)
 var selected = null
 
 #Placing Blocks
-onready var OR_Gate = preload("res://Scenes/GATE_Scenes/AND_Gate.tscn")
+onready var OR_Gate = preload("res://Scenes/GATE_Scenes/OR_Gate.tscn")
+onready var AND_Gate = preload("res://Scenes/GATE_Scenes/AND_Gate.tscn")
 
 #Wire creation
 var selected_wire_holder = null
@@ -261,44 +262,44 @@ func _input(event):
 		   and res['result']['collider'].is_in_group("Input")):
 			var obj = res['result']['collider']
 			selected = obj
-			obj.set_charge(obj, 1)
+			obj.set_charge(1)
+			obj.pass_charge()
 			
 	if(Input.is_action_just_released("select") and mode == INTERACT_MODE and selected != null):
-		selected.set_charge(selected, -1)
+		selected.set_charge(0)
+		selected.pass_charge()
 		selected = null
 			
 	
 func handle_wire_making():
 	if(Input.is_action_just_pressed("select")):
-			var res = raycast_input_pos()
-			if(res['id'].x >= 0 and res['result']['collider'].get_collision_layer_bit(0) and res['result']['collider'].is_in_group("Connectable")):
-				if(selected == null):
-					print("selected wire")
-					selected = res['result']['collider']
+		var res = raycast_input_pos()
+		var clicked = res['result']['collider']
+		if(res['id'].x >= 0 and clicked.get_collision_layer_bit(0) and clicked.is_in_group("Connectable")):
+			if(selected == null):
+				print("selected wire")
+				selected = clicked
+				current_wire = wire.instance()
+				get_parent().get_node("Wire Stuff/Wires").add_child(current_wire, true)
+			else:
+				var r1 = selected.handle_connection(clicked, clicked.get_path(), true)
+				var r2 = clicked.handle_connection(selected, selected.get_path(), false)
+				
+				if(r1>0 and r2>0):
+					current_wire.set_parents(selected, selected.get_path(), clicked, clicked.get_path()) 
+					selected = null
 					current_wire = null
-					current_wire = wire.instance()
-					get_parent().get_node("Wire Stuff/Wires").add_child(current_wire, true)
-				else:
-					var r1 = selected.handle_connection(res['result']['collider'], res['result']['collider'].get_path(), true)
-					var r2 = res['result']['collider'].handle_connection(selected, selected.get_path(), false)
-					
-					if(r1>0 and r2>0):
-						current_wire.set_parents(selected, selected.get_path(), res['result']['collider'], res['result']['collider'].get_path()) 
-						print("made connection")
-						selected = null
-						current_wire = null
-					
-					if(r1 == -1 or r2 == -1):
-						current_wire.get_parent().remove_child(current_wire)
-						selected = null
-						current_wire = null
-					
+				
+				if(r1 == -1 or r2 == -1):
+					current_wire.queue_free()
+					selected = null
+					current_wire = null
+				
 	if(selected != null and current_wire != null):
 		var mousePos3D = raycast_input_pos()['result']['position']
 		current_wire.set_position(selected.transform.origin, mousePos3D)
 		var h = mousePos3D-selected.transform.origin
 		current_wire.set_height(h.length())
-	
-	pass
+
 	
 	

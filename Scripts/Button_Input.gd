@@ -4,26 +4,37 @@ var charge = 0
 var outputConnection = null
 var outputConnectionPath = ""
 
+var is_source = false
+
 #Materials
 var onMat = load("res://Materials/wire_on_material.tres")
 var offMat = load("res://Materials/wire_off_material.tres")
 
-func set_charge(caller, a: int, depth=0):
+func set_charge(a: int, depth=0):
 	depth += 1	
-	if(depth > 50 or caller != self):
+	if(depth > 50):
 		return
 		
 	if(a <= 0):
 		self.charge = 0
 	else:
-		self.charge += a
-	print("Button Input Charge: %d" % self.charge)
+		self.charge = 1
 	
 	if(outputConnection != null):
-		outputConnection.set_charge(self, a, depth)
+		outputConnection.set_charge(a)
+		outputConnection.pass_charge()
 	handle_material()
+	
+func pass_charge():
+	if(outputConnection != null):
+		outputConnection.update_charge()
 		
 func connection_exists(conn):
+	if(outputConnection == conn):
+		return true
+	return false
+		
+func output_connection_exists(conn):
 	if(outputConnection == conn):
 		return true
 	return false
@@ -33,13 +44,12 @@ func handle_connection(conn, connPath, parent=true) -> int:
 		print("rejected")
 		return 0
 	if(conn == outputConnection):
-		outputConnection = null
+		remove_connection(conn)
 		return -1
 	if(outputConnection != null):
 		return 0
 	outputConnection = conn
 	outputConnectionPath = connPath	
-	set_charge(self, int(self.charge>0))
 	return 1
 	
 func handle_connections_dead():
@@ -49,8 +59,9 @@ func handle_connections_dead():
 	
 func remove_connection(conn):
 	if(outputConnection == conn):
-		set_charge(self, -1)
 		outputConnection = null
+		outputConnectionPath = ""
+		
 		
 func handle_material():
 	if(self.charge > 0):
@@ -60,6 +71,9 @@ func handle_material():
 		self.get_node("CSGMesh").mesh.material.albedo_color = offMat.albedo_color
 		#print("updating material off")
 		
+func is_connected_to_source(depth = 0):
+	return true
+	
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	var m = get_node("CSGMesh").mesh.duplicate(true)
@@ -70,7 +84,7 @@ func _ready():
 
 func _on_Area_body_entered(body):
 	if(body != self):
-		set_charge(self, 1)
+		set_charge(1)
 func _on_Area_body_exited(body):
 	if(body != self):
-		set_charge(self, -1)
+		set_charge(0)

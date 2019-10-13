@@ -8,6 +8,8 @@ var inputConnection2Path = ""
 var charge = 0
 var outputConnection = null
 var outputConnectionPath = ""
+var is_source = false
+var updated = false
 
 func _ready():
 	var m = get_node("CSGMesh").mesh.duplicate(true)
@@ -18,6 +20,7 @@ func _ready():
 func handle_connection(conn, connPath, parent=false) -> int:
 	if(connection_exists(conn)):
 		remove_connection(conn)
+		return -1
 	if(parent):
 		return make_output_connection(conn, connPath)
 	return make_input_connection(conn, connPath)
@@ -29,31 +32,41 @@ func connection_exists(conn):
 		return true
 	if(outputConnection == conn):
 		return true
-
+	return false
+func output_connection_exists(conn):
+	if(outputConnection == conn):
+		return true
 	return false
 func remove_connection(conn):
 	if(inputConnection1 == conn):
 		inputConnection1 = null
+		inputConnection1Path = ""
 	if(inputConnection2 == conn):
 		inputConnection2 = null
+		inputConnection2Path = ""
 	if(outputConnection == conn):
 		outputConnection = null
+		outputConnectionPath = ""
 
 func make_input_connection(conn, connPath) -> int:
 	if(inputConnection1 == null):
 		inputConnection1 = conn
 		inputConnection1Path = connPath
+		update_charge()
 		return 1
-	if(inputConnection2 == null):
+	elif(inputConnection2 == null):
 		inputConnection2 = conn
 		inputConnection2Path = connPath
+		update_charge()
 		return 1
-
+	
 	return 0
+	
 func make_output_connection(conn, connPath) -> int:
 	if(outputConnection == null):
 		outputConnection = conn
 		outputConnectionPath = connPath
+		update_charge()
 		return 1
 	return 0
 
@@ -68,17 +81,31 @@ func handle_connections_dead():
 	   not get_parent().get_parent().find_node("Gates").has_node(inputConnection2Path)):
 			inputConnection2 = null
 	
+func is_connected_to_source(depth = 0):
+	depth += 1
+	if(depth > 50):
+		return false
+	if(inputConnection1 != null and inputConnection1.is_connected_to_source(depth)):
+		return true
+	if(inputConnection2 != null and inputConnection2.is_connected_to_source(depth)):
+		return true
+	
+	return false
 
-func set_charge(caller, charge, depth=0):
+func set_charge(charge, depth=0):
 	depth += 1
 	if(depth > 50):
 		return
-	update_output()
+	update_charge()
 	pass_charge()
 
 func pass_charge():
 	if(outputConnection != null):
-		outputConnection.set_charge(self, charge)
+		outputConnection.set_charge(charge)
+		outputConnection.pass_charge()
 
-func update_output():
+func update_charge(depth = 0):
 	pass
+	
+func _process(delta):
+	updated = false

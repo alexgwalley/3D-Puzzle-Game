@@ -23,17 +23,17 @@ func set_height(h:float):
 	self.get_node("CSGMesh").scale = Vector3(0.5, 0.5, 2*h)
 	
 func set_parents(a, aPath, b, bPath):
-	self.p1 = a
+	p1 = a
 	self.p1Path = aPath
-	self.p2 = b 
+	p2 = b 
 	self.p2Path = bPath
 	set_once = true
 
 func handle_parents():
 	if(set_once and 
-	   not get_parent().get_parent().get_parent().find_node("Gates").has_node(p1Path) or
-	   not get_parent().get_parent().get_parent().find_node("Gates").has_node(p2Path)):
-		get_parent().remove_child(self)
+	   (not get_parent().get_parent().get_parent().find_node("Gates").has_node(p1Path) or
+	   not get_parent().get_parent().get_parent().find_node("Gates").has_node(p2Path))):
+		queue_free()
 	
 
 func update_position():
@@ -41,18 +41,15 @@ func update_position():
 	set_height((p1.transform.origin-p2.transform.origin).length())
 	
 func set_position(pos1:Vector3, pos2:Vector3):
-	
 	#handing position
 	var middle = (pos1+pos2)*0.5
 	desiredPos = Vector3(middle.x, 1, middle.z)
-	
 	
 	#handling rotation
 	var dir = (Vector3(pos2.x, 0, pos2.z)-Vector3(pos1.x, 0, pos1.z))
 	desiredDir = dir
 	var init = Quat(transform.basis)
 	var final = Quat(transform.looking_at(transform.origin + dir, Vector3(0, 1, 0)).basis)
-	#transform.basis = Basis(init.slerp(final, 1))
 	look_at_from_position(desiredPos, transform.origin+dir, Vector3.UP)
 	
 func update_mat():
@@ -63,13 +60,10 @@ func update_mat():
 	
 func _process(delta):
 	if(self.p1 != null):
-		update_position()
-		#print("p1: %d p2: %d" % [self.p1.charge, self.p2.charge])
+		update_position()		
 		charge = int(self.p1.charge>0 and self.p2.charge>0)
 		update_mat()
-	if(set_once and self.p1.connection_exists(self.p2) == false):
-		self.p1.remove_connection(self.p2)
-		self.p2.remove_connection(self.p1)
-		get_parent().remove_child(self)
+	if(set_once and (not p1.connection_exists(p2) and not p2.connection_exists(p1))):
+		queue_free()
 	
 		
