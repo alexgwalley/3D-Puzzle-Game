@@ -263,11 +263,9 @@ func _input(event):
 			var obj = res['result']['collider']
 			selected = obj
 			obj.set_charge(1)
-			obj.pass_charge()
 			
 	if(Input.is_action_just_released("select") and mode == INTERACT_MODE and selected != null):
 		selected.set_charge(0)
-		selected.pass_charge()
 		selected = null
 			
 	

@@ -10,6 +10,9 @@ var is_source = false
 var onMat = load("res://Materials/wire_on_material.tres")
 var offMat = load("res://Materials/wire_off_material.tres")
 
+var updated = true
+var lookedAt = false
+
 func set_charge(a: int, depth=0):
 	depth += 1	
 	if(depth > 50):
@@ -21,13 +24,9 @@ func set_charge(a: int, depth=0):
 		self.charge = 1
 	
 	if(outputConnection != null):
-		outputConnection.set_charge(a)
-		outputConnection.pass_charge()
+		outputConnection.update_charge()
 	handle_material()
 	
-func pass_charge():
-	if(outputConnection != null):
-		outputConnection.update_charge()
 		
 func connection_exists(conn):
 	if(outputConnection == conn):
@@ -81,7 +80,11 @@ func _ready():
 	get_node("CSGMesh").mesh = m
 	get_node("CSGMesh").mesh.material = mat
 	
-
+func reset_looked_at():
+	lookedAt = false
+	if(outputConnection != null and outputConnection.lookedAt):
+		outputConnection.reset_looked_at()
+		
 func _on_Area_body_entered(body):
 	if(body != self):
 		set_charge(1)

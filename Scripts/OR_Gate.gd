@@ -15,16 +15,20 @@ func update_charge(depth = 0):
 	if(depth > 50):
 		return
 	updated = true
+	lookedAt = true
+	charge = 0
 	if(inputConnection1 != null and inputConnection2 != null):
 		if(inputConnection1.charge > 0 or inputConnection2.charge > 0):
 			charge = 1
-			mat.set_shader_param("albedo", onCol)
-			mat.set_shader_param("emission", onCol)
-			light.light_color = onCol
-		else:
-			charge = 0
-			mat.set_shader_param("albedo", offCol)
-			mat.set_shader_param("emission", offCol)
-			light.light_color = offCol
+			
 	if(outputConnection != null and not outputConnection.updated):
 		outputConnection.update_charge(depth)
+	
+	if(charge == 1):
+		mat.set_shader_param("albedo", onCol)
+		mat.set_shader_param("emission", onCol)
+		light.light_color = onCol
+	if(charge == 0):
+		mat.set_shader_param("albedo", offCol)
+		mat.set_shader_param("emission", offCol)
+		light.light_color = offCol

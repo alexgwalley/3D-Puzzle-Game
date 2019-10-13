@@ -10,6 +10,7 @@ var outputConnection = null
 var outputConnectionPath = ""
 var is_source = false
 var updated = false
+var lookedAt = false
 
 func _ready():
 	var m = get_node("CSGMesh").mesh.duplicate(true)
@@ -38,15 +39,23 @@ func output_connection_exists(conn):
 		return true
 	return false
 func remove_connection(conn):
+	var removed = false
 	if(inputConnection1 == conn):
 		inputConnection1 = null
 		inputConnection1Path = ""
+		removed = true
 	if(inputConnection2 == conn):
 		inputConnection2 = null
 		inputConnection2Path = ""
+		removed = true
 	if(outputConnection == conn):
 		outputConnection = null
 		outputConnectionPath = ""
+		removed = true
+	if(removed):
+		print(name + " removed a connection with " + conn.name)
+		reset_looked_at()
+		update_charge()
 
 func make_input_connection(conn, connPath) -> int:
 	if(inputConnection1 == null):
@@ -83,6 +92,7 @@ func handle_connections_dead():
 	
 func is_connected_to_source(depth = 0):
 	depth += 1
+	lookedAt = true
 	if(depth > 50):
 		return false
 	if(inputConnection1 != null and inputConnection1.is_connected_to_source(depth)):
@@ -91,7 +101,12 @@ func is_connected_to_source(depth = 0):
 		return true
 	
 	return false
-
+	
+func reset_looked_at():
+	lookedAt = false
+	if(outputConnection != null and outputConnection.lookedAt):
+		outputConnection.reset_looked_at()
+		
 func set_charge(charge, depth=0):
 	depth += 1
 	if(depth > 50):
@@ -109,3 +124,4 @@ func update_charge(depth = 0):
 	
 func _process(delta):
 	updated = false
+	lookedAt = false

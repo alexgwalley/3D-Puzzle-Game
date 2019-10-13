@@ -16,6 +16,7 @@ var charge
 var mat
 var is_source = false
 var updated = false
+var lookedAt = false
 
 var onMat = load("res://Materials/wire_on_material.tres")
 var offMat = load("res://Materials/wire_off_material.tres")
@@ -90,11 +91,21 @@ func add_connection(conn, connPath) -> bool:
 	elif(connection4 == null):
 		connection4 = conn
 		connection4Path = connPath
-	#print(name + " made a connection with " + conn.name)
-	#print_connections()
+	reset_looked_at()
 	update_charge()
 	return true
-	
+
+func reset_looked_at():
+	lookedAt = false
+	if(connection1 != null and connection1.lookedAt):
+		connection1.reset_looked_at()	
+	if(connection2 != null and connection2.lookedAt):
+		connection2.reset_looked_at()	
+	if(connection3 != null and connection3.lookedAt):
+		connection3.reset_looked_at()	
+	if(connection4 != null and connection4.lookedAt):
+		connection4.reset_looked_at()	
+
 func remove_connection(conn):
 	var removed = false
 	if(conn == connection1):
@@ -116,28 +127,25 @@ func remove_connection(conn):
 		
 	if(removed):
 		#print_connections()
-		#print(name + "removed a connection with " + conn.name)
+		reset_looked_at()
 		self.update_charge()
 		number_of_connections -= 1
-		#print(number_of_connections)
 		
-	#if(not conn.is_in_group("Purely Output") and removed):
-		#conn.update_charge()
-	
 func is_connected_to_source(depth = 0):
 	depth += 1
 	if(depth > 50):
 		return false
+	
 	if(is_source == true and charge > 0): #this should never happen, but it might  :0
 		return true
-		
-	if(connection1 != null and connection1.is_connected_to_source(depth)):
+	lookedAt = true	
+	if(connection1 != null and not connection1.lookedAt and connection1.is_connected_to_source(depth)):
 		return true
-	if(connection2 != null and connection2.is_connected_to_source(depth)):
+	if(connection2 != null and not connection2.lookedAt and connection2.is_connected_to_source(depth)):
 		return true
-	if(connection3 != null and connection3.is_connected_to_source(depth)):
+	if(connection3 != null and not connection3.lookedAt and connection3.is_connected_to_source(depth)):
 		return true
-	if(connection4 != null and connection4.is_connected_to_source(depth)):
+	if(connection4 != null and not connection4.lookedAt and connection4.is_connected_to_source(depth)):
 		return true
 	return false
 	
@@ -156,16 +164,16 @@ func update_charge(depth = 0):
 	elif(connection4 != null and connection4.charge > 0 and connection4.output_connection_exists(self) and connection4.is_connected_to_source()):
 		self.charge = 1
 	updated = true
-	if(connection1 != null and not connection1.is_in_group("Purely Output") and not connection1.updated):
+	if(connection1 != null and not connection1.updated and not connection1.is_in_group("Purely Output")):
 		connection1.update_charge(depth)
 		#print(name + " is updating " + connection1.name + "'s charge")
-	if(connection2 != null and not connection2.is_in_group("Purely Output") and not connection2.updated):
+	if(connection2 != null and not connection2.updated and not connection2.is_in_group("Purely Output")):
 		connection2.update_charge(depth)
 		#print(name + " is updating " + connection2.name + "'s charge")
-	if(connection3 != null and not connection3.is_in_group("Purely Output") and not connection3.updated):
+	if(connection3 != null and not connection3.updated and not connection3.is_in_group("Purely Output")):
 		connection3.update_charge(depth)
 		#print(name + " is updating " + connection3.name + "'s charge")
-	if(connection4 != null and not connection4.is_in_group("Purely Output") and not connection4.updated):
+	if(connection4 != null and not connection4.updated and not connection4.is_in_group("Purely Output")):
 		connection4.update_charge(depth)
 		#print(name + " is updating " + connection4.name + "'s charge")
 
