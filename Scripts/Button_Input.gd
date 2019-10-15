@@ -13,6 +13,8 @@ var offMat = load("res://Materials/wire_off_material.tres")
 var updated = true
 var lookedAt = false
 
+var blockOnTop = false
+
 func set_charge(a: int, depth=0):
 	depth += 1	
 	if(depth > 50):
@@ -24,7 +26,9 @@ func set_charge(a: int, depth=0):
 		self.charge = 1
 	
 	if(outputConnection != null):
+		reset_checks()
 		outputConnection.update_charge()
+		
 	handle_material()
 	
 		
@@ -39,16 +43,15 @@ func output_connection_exists(conn):
 	return false
 		
 func handle_connection(conn, connPath, parent=true) -> int:
-	if(parent == false):
-		print("rejected")
-		return 0
 	if(conn == outputConnection):
 		remove_connection(conn)
 		return -1
-	if(outputConnection != null):
+	if(outputConnection != null or parent == false or conn.is_in_group("Purely Output")):
 		return 0
 	outputConnection = conn
 	outputConnectionPath = connPath	
+	reset_checks()
+	outputConnection.update_charge()
 	return 1
 	
 func handle_connections_dead():
@@ -58,6 +61,7 @@ func handle_connections_dead():
 	
 func remove_connection(conn):
 	if(outputConnection == conn):
+		outputConnection.update_charge()
 		outputConnection = null
 		outputConnectionPath = ""
 		
@@ -71,7 +75,7 @@ func handle_material():
 		#print("updating material off")
 		
 func is_connected_to_source(depth = 0):
-	return true
+	return charge>0
 	
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -80,14 +84,19 @@ func _ready():
 	get_node("CSGMesh").mesh = m
 	get_node("CSGMesh").mesh.material = mat
 	
-func reset_looked_at():
+func reset_checks():
 	lookedAt = false
 	if(outputConnection != null and outputConnection.lookedAt):
-		outputConnection.reset_looked_at()
-		
+		outputConnection.reset_checks()
+func reset_looked_at():
+	reset_checks()
 func _on_Area_body_entered(body):
 	if(body != self):
+		blockOnTop = true
+		reset_checks()
 		set_charge(1)
 func _on_Area_body_exited(body):
 	if(body != self):
+		blockOnTop = false
+		reset_checks()
 		set_charge(0)

@@ -68,14 +68,13 @@ func handle_connections_dead():
 		remove_connection(connection4) 
 
 func print_connections():
-	print(str(self) + "has connections of: ")
+	print(name + " has connections of: ")
 	print(connection1)
 	print(connection2)
 	print(connection3)
 	print(connection4)
 
 func add_connection(conn, connPath) -> bool:
-	#print("Added connection")
 	if(number_of_connections + 1 > max_connections):
 		return false 
 	number_of_connections += 1
@@ -91,10 +90,23 @@ func add_connection(conn, connPath) -> bool:
 	elif(connection4 == null):
 		connection4 = conn
 		connection4Path = connPath
-	reset_looked_at()
+	reset_checks()
 	update_charge()
 	return true
 
+func reset_checks():
+	lookedAt = false
+	updated = false
+	
+	if(connection1 != null and (connection1.lookedAt or connection1.updated)):
+		connection1.reset_checks()	
+	if(connection2 != null and (connection2.lookedAt or connection2.updated)):
+		connection2.reset_checks()	
+	if(connection3 != null and (connection3.lookedAt or connection3.updated)):
+		connection3.reset_checks()	
+	if(connection4 != null and (connection4.lookedAt or connection4.updated)):
+		connection4.reset_checks()	
+		
 func reset_looked_at():
 	lookedAt = false
 	if(connection1 != null and connection1.lookedAt):
@@ -105,7 +117,7 @@ func reset_looked_at():
 		connection3.reset_looked_at()	
 	if(connection4 != null and connection4.lookedAt):
 		connection4.reset_looked_at()	
-
+		
 func remove_connection(conn):
 	var removed = false
 	if(conn == connection1):
@@ -126,81 +138,57 @@ func remove_connection(conn):
 		removed = true
 		
 	if(removed):
-		#print_connections()
-		reset_looked_at()
+		reset_checks()
 		self.update_charge()
 		number_of_connections -= 1
 		
 func is_connected_to_source(depth = 0):
 	depth += 1
 	if(depth > 50):
-		return false
-	
-	if(is_source == true and charge > 0): #this should never happen, but it might  :0
-		return true
+		return false	
 	lookedAt = true	
-	if(connection1 != null and not connection1.lookedAt and connection1.is_connected_to_source(depth)):
+	if(  connection1 != null and not connection1.lookedAt and connection1.output_connection_exists(self) and connection1.is_connected_to_source(depth)):
 		return true
-	if(connection2 != null and not connection2.lookedAt and connection2.is_connected_to_source(depth)):
+	elif(connection2 != null and not connection2.lookedAt and connection2.output_connection_exists(self) and connection2.is_connected_to_source(depth)):
 		return true
-	if(connection3 != null and not connection3.lookedAt and connection3.is_connected_to_source(depth)):
+	elif(connection3 != null and not connection3.lookedAt and connection3.output_connection_exists(self) and connection3.is_connected_to_source(depth)):
 		return true
-	if(connection4 != null and not connection4.lookedAt and connection4.is_connected_to_source(depth)):
+	elif(connection4 != null and not connection4.lookedAt and connection4.output_connection_exists(self) and connection4.is_connected_to_source(depth)):
 		return true
 	return false
 	
-func update_charge(depth = 0):
+func update_charge(depth = 0, cts = false):
 	depth += 1
 	if(depth > 50):
 		return false
 	self.charge = 0
-	#print_debug("updating_charge")
-	if(connection1 != null and connection1.charge > 0 and connection1.output_connection_exists(self) and connection1.is_connected_to_source()):
+	reset_looked_at()
+	if(  connection1 != null and (cts or connection1.is_connected_to_source())):
 		self.charge = 1
-	elif(connection2 != null and connection2.charge > 0 and connection2.output_connection_exists(self) and connection2.is_connected_to_source()):
+		cts = true
+	elif(connection2 != null and (cts or connection2.is_connected_to_source())):
 		self.charge = 1
-	elif(connection3 != null and connection3.charge > 0 and connection3.output_connection_exists(self) and connection3.is_connected_to_source()):
+		cts = true
+	elif(connection3 != null and (cts or connection3.is_connected_to_source())):
 		self.charge = 1
-	elif(connection4 != null and connection4.charge > 0 and connection4.output_connection_exists(self) and connection4.is_connected_to_source()):
+		cts = true
+	elif(connection4 != null and (cts or connection4.is_connected_to_source())):
 		self.charge = 1
+		cts = true
 	updated = true
 	if(connection1 != null and not connection1.updated and not connection1.is_in_group("Purely Output")):
-		connection1.update_charge(depth)
-		#print(name + " is updating " + connection1.name + "'s charge")
+		connection1.update_charge(depth, cts)
 	if(connection2 != null and not connection2.updated and not connection2.is_in_group("Purely Output")):
-		connection2.update_charge(depth)
-		#print(name + " is updating " + connection2.name + "'s charge")
+		connection2.update_charge(depth, cts)
 	if(connection3 != null and not connection3.updated and not connection3.is_in_group("Purely Output")):
-		connection3.update_charge(depth)
-		#print(name + " is updating " + connection3.name + "'s charge")
+		connection3.update_charge(depth, cts)
 	if(connection4 != null and not connection4.updated and not connection4.is_in_group("Purely Output")):
-		connection4.update_charge(depth)
-		#print(name + " is updating " + connection4.name + "'s charge")
-
-func set_charge(c):
-	self.charge = c
-
-func pass_charge(depth=0):
-	depth += 1
-	if(depth > 30):
-		return
-	if(connection1 != null and self.charge != connection1.charge):
-		connection1.set_charge(self.charge)
-		connection1.pass_charge()
-	if(connection2 != null and self.charge != connection2.charge):
-		connection2.set_charge(self.charge)
-		connection2.pass_charge()
-	if(connection3 != null and self.charge != connection3.charge):
-		connection3.set_charge(self.charge)
-		connection3.pass_charge()
-	if(connection4 != null and self.charge != connection4.charge):
-		connection4.set_charge(self.charge)
-		connection4.pass_charge()
+		connection4.update_charge(depth, cts)
 
 func handle_material():
 	if(self.charge > 0):
 		get_node("Mesh").mesh.material.albedo_color = Color(1, 1, 0, 1)
-	if(self.charge == 0):
+	else:
 		get_node("Mesh").mesh.material.albedo_color = Color(0, 0, 0, 1)
 		
 func _process(delta):

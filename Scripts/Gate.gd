@@ -54,7 +54,7 @@ func remove_connection(conn):
 		removed = true
 	if(removed):
 		print(name + " removed a connection with " + conn.name)
-		reset_looked_at()
+		reset_checks()
 		update_charge()
 
 func make_input_connection(conn, connPath) -> int:
@@ -102,11 +102,13 @@ func is_connected_to_source(depth = 0):
 	
 	return false
 	
-func reset_looked_at():
+func reset_checks():
 	lookedAt = false
 	if(outputConnection != null and outputConnection.lookedAt):
-		outputConnection.reset_looked_at()
-		
+		outputConnection.reset_checks()
+func reset_looked_at():
+	reset_checks()
+				
 func set_charge(charge, depth=0):
 	depth += 1
 	if(depth > 50):
