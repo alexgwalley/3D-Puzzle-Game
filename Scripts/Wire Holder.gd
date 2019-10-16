@@ -157,24 +157,24 @@ func is_connected_to_source(depth = 0):
 		return true
 	return false
 	
-func update_charge(depth = 0, cts = false):
+func update_charge(depth = 0, cts = null):
 	depth += 1
 	if(depth > 50):
 		return false
 	self.charge = 0
 	reset_looked_at()
-	if(  connection1 != null and (cts or connection1.is_connected_to_source())):
-		self.charge = 1
-		cts = true
-	elif(connection2 != null and (cts or connection2.is_connected_to_source())):
-		self.charge = 1
-		cts = true
-	elif(connection3 != null and (cts or connection3.is_connected_to_source())):
-		self.charge = 1
-		cts = true
-	elif(connection4 != null and (cts or connection4.is_connected_to_source())):
-		self.charge = 1
-		cts = true
+	if(cts == null): # recheck
+		if(  connection1 != null and connection1.is_connected_to_source()):
+			cts = true
+		elif(connection2 != null and connection2.is_connected_to_source()):
+			cts = true
+		elif(connection3 != null and connection3.is_connected_to_source()):
+			cts = true
+		elif(connection4 != null and connection4.is_connected_to_source()):
+			cts = true
+	else:
+		self.charge = int(cts)
+	
 	updated = true
 	if(connection1 != null and not connection1.updated and not connection1.is_in_group("Purely Output")):
 		connection1.update_charge(depth, cts)

@@ -17,6 +17,7 @@ extents = Vector3( 1, 0.260932, 1 )
 "Input",
 "Connectable",
 "Purely Output",
+"Indestructable",
 ]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
 collision_layer = 524289

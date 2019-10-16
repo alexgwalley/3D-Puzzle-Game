@@ -5,7 +5,7 @@ const BUILD_MODE = 0
 const WIRE_MODE = 1
 const INTERACT_MODE = 2
 
-var mode = WIRE_MODE
+var mode = BUILD_MODE
 
 #Input
 var move_dif = 0.5
@@ -33,6 +33,7 @@ var selected = null
 var gateMode = 0
 onready var OR_Gate = preload("res://Scenes/GATE_Scenes/OR_Gate.tscn")
 onready var AND_Gate = preload("res://Scenes/GATE_Scenes/AND_Gate.tscn")
+onready var NOT_Gate = preload("res://Scenes/GATE_Scenes/NOT_Gate.tscn")
 onready var Gate = OR_Gate
 
 #Wire creation
@@ -217,7 +218,7 @@ func _input(event):
 		get_parent().get_node("Wire Stuff/Wire Holders").add_child(wh)
 	
 	if(selected != null and Input.is_action_just_pressed("quit")):
-		if(mode == BUILD_MODE):
+		if(mode == BUILD_MODE and not selected.is_in_group("Indestructable")):
 			#Delete the block in hand			
 			selected.get_parent().remove_child(selected)
 			selected = null
@@ -275,6 +276,8 @@ func updateGateMode():
 		Gate = OR_Gate
 	elif(gateMode == 1):
 		Gate = AND_Gate
+	elif(gateMode == 2):
+		Gate = NOT_Gate
 			
 func handle_wire_making():
 	if(Input.is_action_just_pressed("select")):

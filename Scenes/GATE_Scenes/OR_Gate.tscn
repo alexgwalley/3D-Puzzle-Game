@@ -130,21 +130,23 @@ offCol = Color( 0.027451, 0.215686, 0.027451, 1 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 0.4, 0, 0, 0 )
 shape = SubResource( 1 )
 
-[node name="Scene Root2" type="Spatial" parent="."]
+[node name="Spatial" type="Spatial" parent="."]
 
-[node name="OR" type="MeshInstance" parent="Scene Root2"]
-transform = Transform( -7.5979e-008, -1.22909, -1.22909, 0, 1.22909, -1.22909, 1.7382, -5.37253e-008, -5.37253e-008, 0, 2.81837, 0 )
+[node name="OR" type="MeshInstance" parent="Spatial"]
+transform = Transform( -7.59791e-008, -0.996988, -1.42385, 0, 1.42385, -0.996988, 1.7382, -4.35797e-008, -6.22383e-008, 0, 4.5, 0 )
 mesh = SubResource( 2 )
 material/0 = SubResource( 4 )
 
-[node name="CSGMesh" type="MeshInstance" parent="."]
-mesh = SubResource( 5 )
-material/0 = null
-material/1 = null
-
-[node name="light" type="SpotLight" parent="."]
+[node name="SpotLight" type="SpotLight" parent="."]
 transform = Transform( 1, 0, 0, 0, -4.37114e-008, 1, 0, -1, -4.37114e-008, -0.106005, 6.0881, -0.0413588 )
 light_color = Color( 0.0901961, 0.278431, 0.0235294, 1 )
 light_energy = 6.0
 spot_range = 10.0
 spot_attenuation = 0.517632
+
+[node name="Spatial2" type="Spatial" parent="."]
+
+[node name="CSGMesh" type="MeshInstance" parent="Spatial2"]
+mesh = SubResource( 5 )
+material/0 = null
+material/1 = null

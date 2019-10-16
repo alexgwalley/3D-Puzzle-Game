@@ -27,7 +27,7 @@ func set_charge(a: int, depth=0):
 	
 	if(outputConnection != null):
 		reset_checks()
-		outputConnection.update_charge()
+		outputConnection.update_charge(0, charge>0)
 		
 	handle_material()
 	
@@ -51,7 +51,7 @@ func handle_connection(conn, connPath, parent=true) -> int:
 	outputConnection = conn
 	outputConnectionPath = connPath	
 	reset_checks()
-	outputConnection.update_charge()
+	outputConnection.update_charge(0, charge>0)
 	return 1
 	
 func handle_connections_dead():

@@ -1,7 +1,7 @@
 extends "res://Scripts/Gate.gd"
 
-onready var mat = get_node("CSGMesh").mesh.surface_get_material(0)
-onready var light = get_node("light")
+onready var mat = get_node("Spatial2/CSGMesh").mesh.surface_get_material(0)
+onready var light = get_node("SpotLight")
 export var onCol : Color;
 export var offCol : Color;
 
@@ -11,6 +11,7 @@ func _ready():
 	mat.set_shader_param("emission", offCol)
 func _process(delta):
 	update_charge()
+	
 func update_charge(depth = 0, cts = false):
 	depth += 1
 	if(depth > 50):

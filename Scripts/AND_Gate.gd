@@ -1,6 +1,6 @@
 extends "res://Scripts/Gate.gd"
 
-onready var mat = get_node("CSGMesh").mesh.surface_get_material(0)
+onready var mat = get_node("Spatial2/CSGMesh").mesh.surface_get_material(0)
 onready var light = get_node("SpotLight")
 export var onCol : Color;
 export var offCol : Color;
