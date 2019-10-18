@@ -1,6 +1,6 @@
 extends RigidBody
 
-var desired_pos: Vector3 = Vector3(0, 0, 0)
+onready var desired_pos: Vector3
 var desired_rot: float = 0
 var at_position: bool = true  
 var at_rotation: bool = true
@@ -8,7 +8,9 @@ var selected: bool = false
 var precision: float = 0.0025
 var type = 0
 
-
+func _ready():
+	desired_pos = transform.origin
+	
 # Called when the node enters the scene tree for the first time.
 func set_selected(b:bool) -> void:
 	selected = b
@@ -41,7 +43,8 @@ func rot_90() -> void:
 	desired_rot = clean_rot(desired_rot)+deg2rad(90)
 	
 func _process(delta):
-	if(not at_position):
+	
+	if(not at_position and Singleton.gameMode == Singleton.BUILD_MODE):
 		var dif = (desired_pos - transform.origin)*delta*10
 		translate(dif)
 		if(dif.length() < precision):

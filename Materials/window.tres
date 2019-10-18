@@ -21,13 +21,9 @@ uniform vec3 uv1_offset;
 uniform vec3 uv2_scale;
 uniform vec3 uv2_offset;
 
-
 void vertex() {
 	UV=UV*uv1_scale.xy+uv1_offset.xy;
 }
-
-
-
 
 void fragment() {
 	vec2 base_uv = UV;

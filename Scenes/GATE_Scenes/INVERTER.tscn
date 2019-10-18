@@ -1,6 +1,7 @@
 [gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://Scripts/INVERTER.gd" type="Script" id=1]
+[ext_resource path="res://Scripts/Gates/INVERTER.gd" type="Script" id=1]
+
 
 [sub_resource type="SpatialMaterial" id=3]
 albedo_color = Color( 0.352941, 0.0470588, 0.0470588, 1 )
