@@ -1,6 +1,6 @@
 extends Control
 
-var mouseSensitivity = 0.3
+var mouseSensitivity = 0.5
 var mouseWheelPosition = 0
 var roundMousePosition = 0
 
@@ -30,12 +30,14 @@ func _input(event):
 		updateMouseWheelPosition()
 		updateSelectedFromMouseWheelPosition()
 		updateGateGUISelected()
+		get_parent().get_node("PlayerControl").updateGateMode()
 		
 	if(event is InputEventMouseButton and event.button_index == BUTTON_WHEEL_UP):
 		mouseWheelPosition -= mouseSensitivity
 		updateMouseWheelPosition()
 		updateSelectedFromMouseWheelPosition()
 		updateGateGUISelected()
+		get_parent().get_node("PlayerControl").updateGateMode()
 
 func updateMouseWheelPosition():
 	if(mouseWheelPosition > Singleton.numberOfGates - 1):

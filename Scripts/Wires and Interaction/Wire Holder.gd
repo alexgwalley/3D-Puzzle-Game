@@ -67,13 +67,6 @@ func handle_connections_dead():
 	   not get_parent().get_parent().get_parent().find_node("Wire Stuff").find_node("Wire Holders").has_node(connection4Path)):
 		remove_connection(connection4) 
 
-func print_connections():
-	print(name + " has connections of: ")
-	print(connection1)
-	print(connection2)
-	print(connection3)
-	print(connection4)
-
 func add_connection(conn, connPath) -> bool:
 	if(number_of_connections + 1 > max_connections):
 		return false 
@@ -172,9 +165,10 @@ func update_charge(depth = 0, cts = null):
 			cts = true
 		elif(connection4 != null and connection4.charge > 0 and connection4.is_connected_to_source()):
 			cts = true
-	else:
-		self.charge = int(cts)
-	
+		else:
+			cts = false
+				
+	self.charge = int(cts)
 	updated = true
 	if(connection1 != null and not connection1.updated and not connection1.is_in_group("Purely Output")):
 		connection1.update_charge(depth, cts)

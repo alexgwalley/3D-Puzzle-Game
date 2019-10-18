@@ -55,10 +55,8 @@ func handle_wire_making():
 					var r1 = selected.handle_connection(clicked, clicked.get_path(), true)
 					var r2 = clicked.handle_connection(selected, selected.get_path(), false)
 					
-					if(r1 >= 1 and r2 >= 1): # connection made!
-						
+					if(r1 >= 1 and r2 >= 1 and current_wire != null): # connection made!
 						current_wire.set_parents(selected, selected.get_path(), clicked, clicked.get_path()) 
-						
 						get_parent().selected = null
 						current_wire = null
 					

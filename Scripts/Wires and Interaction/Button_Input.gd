@@ -71,12 +71,10 @@ func remove_connection(conn):
 func handle_material():
 	if(self.charge > 0):
 		self.get_node("CSGMesh").mesh.surface_get_material(0).albedo_color = onColor
-		#self.get_node("CSGMesh").mesh.surface_get_material(0).emission = onColor
-		#print("updating material on")
+		get_node("SpotLight").light_color = onColor
 	if(self.charge == 0):
 		self.get_node("CSGMesh").mesh.surface_get_material(0).albedo_color = offColor
-		#self.get_node("CSGMesh").mesh.surface_get_material(0).emission = offColor
-		#print("updating material off")
+		get_node("SpotLight").light_color = offColor
 		
 func is_connected_to_source(depth = 0):
 	return charge>0

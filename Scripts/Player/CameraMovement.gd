@@ -11,8 +11,8 @@ onready var input_pos = get_viewport().size/2
 onready var desired_input_pos = get_viewport().size/2
 var input_pos_move_dif = 8
 var input_pos_move_snapiness = 10
-onready var circle_size = get_parent().get_node("Mouse/TextureRect").rect_size*get_parent().get_node("Mouse/TextureRect").rect_scale
-onready var input_pos_link = get_parent().get_node("Mouse")
+onready var circle_size = get_parent().get_node("GUI/Mouse/TextureRect").rect_size*get_parent().get_node("GUI/Mouse/TextureRect").rect_scale
+onready var input_pos_link = get_parent().get_node("GUI/Mouse")
 
 # camera movement
 var cameraBorderWidth = 100
@@ -236,13 +236,12 @@ func _input(event):
 		# loop through the modes
 		if(Singleton.gameMode == Singleton.BUILD_MODE):
 			Singleton.gameMode = Singleton.WIRE_MODE
-			print("Wire Mode")
 		elif(Singleton.gameMode == Singleton.WIRE_MODE):
 			Singleton.gameMode = Singleton.INTERACT_MODE
-			print("Interact Mode")	
 		elif(Singleton.gameMode == Singleton.INTERACT_MODE):
 			Singleton.gameMode = Singleton.BUILD_MODE
-			print("Build Mode")
+						
+		get_parent().get_node("GUI/Mode GUI").updateModeGUI()
 			
 # function that changes which gate spaws upon creation
 func updateGateMode():
@@ -255,6 +254,7 @@ func updateGateMode():
 	elif(Singleton.gateMode == 3):
 		Gate = XOR_Gate
 		
+	
 			
 
 	
