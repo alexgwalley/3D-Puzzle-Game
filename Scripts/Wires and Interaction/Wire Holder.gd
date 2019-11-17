@@ -18,6 +18,8 @@ var is_source = false
 var updated = false
 var lookedAt = false
 
+var type = -1
+
 var onMat = load("res://Materials/wire_on_material.tres")
 var offMat = load("res://Materials/wire_off_material.tres")
 

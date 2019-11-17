@@ -3,6 +3,9 @@
 [ext_resource path="res://CALIBRIB.TTF" type="DynamicFontData" id=1]
 
 [resource]
-size = 37
+size = 60
+outline_size = 9
+outline_color = Color( 0.937255, 0.866667, 0.317647, 1 )
 use_filter = true
+extra_spacing_char = 24
 font_data = ExtResource( 1 )

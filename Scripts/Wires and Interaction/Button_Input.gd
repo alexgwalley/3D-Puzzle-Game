@@ -5,6 +5,7 @@ var outputConnection = null
 var outputConnectionPath = ""
 
 var is_source = false
+var pressed = false
 
 #Materials
 export var onColor:Color
@@ -14,6 +15,7 @@ var updated = true
 var lookedAt = false
 
 var blockOnTop = false
+var block = null
 
 onready var animator = get_node("CSGMesh/AnimationPlayer")
 
@@ -92,15 +94,28 @@ func reset_checks():
 		outputConnection.reset_checks()
 func reset_looked_at():
 	reset_checks()
+	
+func update_animations():
+	if(charge == 0 and pressed == true):
+		animator.play("PressedToReleased")
+	if(charge > 0 and pressed == false):
+		animator.play("ReleasedToPressed")
+		
 func _on_Area_body_entered(body):
 	if(body != self):
 		blockOnTop = true
+		block = body
 		reset_checks()
-		animator.play("ReleasedToPressed")
+		update_animations()
 		set_charge(1)
+		pressed = true
+
 func _on_Area_body_exited(body):
 	if(body != self):
 		blockOnTop = false
+		block = null
 		reset_checks()
-		animator.play("PressedToReleased")
+		update_animations()
 		set_charge(0)
+		pressed = false
+

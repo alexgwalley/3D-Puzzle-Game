@@ -5,6 +5,8 @@ onready var light = get_node("SpotLight")
 export var onCol : Color;
 export var offCol : Color;
 
+var type = 1
+
 func _ready():
 	mat.set_shader_param("albedo", offCol)
 	mat.set_shader_param("emission", offCol)

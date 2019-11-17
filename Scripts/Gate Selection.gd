@@ -4,6 +4,9 @@ var mouseSensitivity = 0.5
 var mouseWheelPosition = 0
 var roundMousePosition = 0
 
+func ready():
+	updateGateGUINumber()
+
 func _input(event):
 	
 	# joysticks
@@ -52,6 +55,10 @@ func updateSelectedFromMouseWheelPosition():
 
 func updateGateGUISelected():
 	for child in get_children():
-		if(child.mode == Singleton.gateMode):
+		if(child.type == Singleton.gateMode):
 			child.set_selected()
+			
+func updateGateGUINumber():
+	for child in get_children():
+		child.update_number_of_gates_left_GUI()
 		

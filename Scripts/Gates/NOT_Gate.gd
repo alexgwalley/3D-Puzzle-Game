@@ -5,6 +5,8 @@ onready var light = get_node("SpotLight")
 export var onCol : Color;
 export var offCol : Color;
 
+var type = 2
+
 func _ready():
 	var m = get_node("Spatial2/CSGMesh").mesh.duplicate(true)
 	mat = get_node("Spatial2/CSGMesh").mesh.surface_get_material(0).duplicate()

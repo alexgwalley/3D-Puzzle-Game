@@ -34,7 +34,7 @@ surfaces/0 = {
 "vertex_count": 96
 }
 
-[sub_resource type="Animation" id=7]
+[sub_resource type="Animation" id=3]
 resource_name = "PressedToReleased"
 length = 0.2
 tracks/0/type = "value"
@@ -50,7 +50,7 @@ tracks/0/keys = {
 "values": [ Vector3( 0, 0.2, 0 ), Vector3( 0, 0.433, 0 ) ]
 }
 
-[sub_resource type="Animation" id=8]
+[sub_resource type="Animation" id=4]
 resource_name = "ReleasedToPressed"
 length = 0.2
 tracks/0/type = "value"
@@ -75,8 +75,8 @@ extents = Vector3( 1, 0.260932, 1 )
 [node name="Input" type="RigidBody" groups=[
 "Input",
 "Connectable",
-"Purely Output",
 "Indestructable",
+"Purely Output",
 ]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.338196, 0 )
 collision_layer = 524289
@@ -101,23 +101,23 @@ mesh = SubResource( 2 )
 material/0 = null
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="CSGMesh"]
-anims/PressedToReleased = SubResource( 7 )
-anims/ReleasedToPressed = SubResource( 8 )
+anims/PressedToReleased = SubResource( 3 )
+anims/ReleasedToPressed = SubResource( 4 )
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0926965, 0 )
+transform = Transform( 0.952325, 0, 0, 0, 1, 0, 0, 0, 0.911706, 0, 0.0926965, 0 )
 shape = SubResource( 5 )
 
 [node name="Area" type="Area" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.487681, 0 )
 
 [node name="CollisionShape" type="CollisionShape" parent="Area"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.127568, 0 )
+transform = Transform( 0.743062, 0, 0, 0, 1, 0, 0, 0, 0.753614, 0, 0.127568, 0 )
 shape = SubResource( 6 )
 
 [node name="SpotLight" type="SpotLight" parent="."]
 transform = Transform( 1, 0, 0, 0, -4.37114e-008, 1, 0, -1, -4.37114e-008, 0, 5, 0 )
-light_color = Color( 0, 0, 0, 1 )
+light_color = Color( 0.443137, 0, 0, 1 )
 light_energy = 6.0
 spot_range = 10.0
 spot_attenuation = 0.5

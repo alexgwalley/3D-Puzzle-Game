@@ -30,3 +30,5 @@ func _process(delta):
 		if(selected.animator):
 			selected.animator.play("PressedToReleased")		
 		get_parent().selected = null 			# de-select the button
+		
+	

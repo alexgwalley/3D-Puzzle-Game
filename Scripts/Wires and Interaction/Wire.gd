@@ -31,26 +31,25 @@ func set_parents(a, aPath, b, bPath):
 
 func handle_parents():
 	if(set_once and 
-	   (not get_parent().get_parent().get_parent().find_node("Gates").has_node(p1Path) or
-	   not get_parent().get_parent().get_parent().find_node("Gates").has_node(p2Path))):
+	   (not get_parent().get_parent().find_node("Gates").has_node(p1Path) or
+	   not get_parent().get_parent().find_node("Gates").has_node(p2Path))):
 		queue_free()
 	
 
 func update_position():
-	set_position(p1.transform.origin, p2.transform.origin)
-	set_height((p1.transform.origin-p2.transform.origin).length())
+	var puzzle1 = p1.get_parent().get_parent()
+	var puzzle2 = p2.get_parent().get_parent()
+	set_position(p1.transform.origin+puzzle1.transform.origin, p2.transform.origin+puzzle2.transform.origin)
+	set_height(((p1.transform.origin+puzzle1.transform.origin)-(p2.transform.origin+puzzle2.transform.origin)).length())
 	
 func set_position(pos1:Vector3, pos2:Vector3):
 	#handing position
-	var middle = (pos1+pos2)*0.5
+	var middle = ((pos1)+pos2)*0.5
 	desiredPos = Vector3(middle.x, 1, middle.z)
 	
 	#handling rotation
 	var dir = (Vector3(pos2.x, 0, pos2.z)-Vector3(pos1.x, 0, pos1.z))
-	desiredDir = dir
-	var init = Quat(transform.basis)
-	var final = Quat(transform.looking_at(transform.origin + dir, Vector3(0, 1, 0)).basis)
-	look_at_from_position(desiredPos, transform.origin+dir, Vector3.UP)
+	look_at_from_position(desiredPos, transform.origin+get_parent().get_parent().transform.origin + dir, Vector3.UP)
 	
 func update_mat():
 	if(charge > 0):

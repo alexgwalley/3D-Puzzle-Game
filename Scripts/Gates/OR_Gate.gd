@@ -5,6 +5,8 @@ onready var light = get_node("SpotLight")
 export var onCol : Color;
 export var offCol : Color;
 
+var type = 0
+
 
 func _ready():
 	mat.set_shader_param("albedo", offCol)
@@ -33,7 +35,7 @@ func update_charge(depth = 0, cts = null):
 			self.charge = 1
 			
 	if(outputConnection != null and not outputConnection.updated):
-		outputConnection.update_charge(depth, (cts and charge>0) )
+		outputConnection.update_charge(depth, (cts or charge>0) )
 	
 	if(charge > 0):
 		mat.set_shader_param("albedo", onCol)

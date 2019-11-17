@@ -6,7 +6,6 @@ var at_position: bool = true
 var at_rotation: bool = true
 var selected: bool = false
 var precision: float = 0.0025
-var type = 0
 
 func _ready():
 	desired_pos = transform.origin
@@ -22,6 +21,8 @@ func set_selected(b:bool) -> void:
 			var final = Quat(child.transform.rotated(Vector3(0, 1, 0), desired_rot-child.rotation.y).basis)
 			child.transform.basis = Basis(init.slerp(final, 1))
 		at_rotation = true
+		
+		
 	
 func set_rot(rot:float):
 	desired_rot = rot
@@ -45,7 +46,7 @@ func rot_90() -> void:
 func _process(delta):
 	
 	if(not at_position and Singleton.gameMode == Singleton.BUILD_MODE):
-		var dif = (desired_pos - transform.origin)*delta*10
+		var dif = (desired_pos-transform.origin)*delta*10
 		translate(dif)
 		if(dif.length() < precision):
 			at_position = true
@@ -63,6 +64,7 @@ func _process(delta):
 	
 	
 func set_desired_pos(pos: Vector3) -> void:
-	desired_pos = pos
+	desired_pos = pos - get_parent().get_parent().transform.origin
+	desired_pos = pos - Singleton.current_puzzle.transform.origin
 	at_position = false
 	

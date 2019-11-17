@@ -15,11 +15,20 @@ func _process(delta):
     and Singleton.gameMode == Singleton.BUILD_MODE ):
 		create_wire_holder()
 		
+	if( current_wire != null 								# the player has something in hand
+	and Input.is_action_just_pressed("delete")):		# the player is trying to delete a block
+		print("sdlhgjhg")
+		current_wire.queue_free()
+		current_wire = null
+		get_parent().selected = null
+
 # function that creates a new wire holder and places it 
 # in a 3D position that the player is currently pointing at
 # --Note: if the player is not pointing at anything, sets the wire holder to the origin
 func create_wire_holder():
 	var wh = wire_holder.instance() # the newly instanced wire holder
+	# add the wire holder to the scene
+	Singleton.current_puzzle.get_node("Wire Stuff").add_child(wh) 
 	wh.set_selected(true) 
 	get_parent().selected = wh
 	
@@ -28,8 +37,6 @@ func create_wire_holder():
 		# snap the wire holder's position to the grid
 		wh.set_desired_pos(get_parent().get_id(cast['result']['position'])) 
 	
-	# add the wire holder to the scene
-	get_parent().get_parent().get_node("Wire Stuff/Wire Holders").add_child(wh) 
 
 # function that creates wires and makes their connections to interactables
 func handle_wire_making():
@@ -46,7 +53,7 @@ func handle_wire_making():
 					current_wire = wire.instance() # instance a new wire
 					
 					# add the wire to the scene
-					get_parent().get_parent().get_node("Wire Stuff/Wires").add_child(current_wire, true)
+					Singleton.current_puzzle.get_node("Wire Stuff").add_child(current_wire, true)
 				else:
 					# results from the handle connection function
 					# 1 means the connection was created
@@ -71,12 +78,8 @@ func handle_wire_making():
 	if(selected != null and current_wire != null):
 		var res = get_parent().raycast_input_pos()
 		if(res['id'].x >= 0): # we hit something
-			
 			var mousePos3D = res['result']['position'] 
-			current_wire.set_position(selected.transform.origin, mousePos3D)
+			current_wire.set_position(selected.transform.origin+Singleton.current_puzzle.transform.origin, mousePos3D)
 			
-			var d = mousePos3D-selected.transform.origin # the vector pointing from selected to the mousePos3D
+			var d = mousePos3D-(selected.transform.origin + Singleton.current_puzzle.transform.origin) # the vector pointing from selected to the mousePos3D
 			current_wire.set_height(d.length())
-		if(Input.is_action_pressed("delete")):
-			current_wire.queue_free()
-			current_wire = null
