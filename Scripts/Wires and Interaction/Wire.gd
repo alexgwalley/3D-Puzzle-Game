@@ -29,7 +29,7 @@ func set_parents(a, aPath, b, bPath):
 	self.p2Path = bPath
 	set_once = true
 
-func handle_parents():
+func handle_connections_dead():
 	if(set_once and 
 	   (not get_parent().get_parent().find_node("Gates").has_node(p1Path) or
 	   not get_parent().get_parent().find_node("Gates").has_node(p2Path))):

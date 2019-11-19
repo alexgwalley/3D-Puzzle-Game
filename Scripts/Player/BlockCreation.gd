@@ -44,11 +44,8 @@ func delete_selected(selected):
 	selected.get_parent().remove_child(selected) # delete object from scene
 	get_parent().selected = null
 	
-	
 	# check if parents are still alive...if not, remove the connection
-	for child in Singleton.current_puzzle.find_node("Wire Stuff").find_node("Wires").get_children():
-		child.handle_parents()
-	for child in Singleton.current_puzzle.find_node("Wire Stuff").find_node("Wire Holders").get_children():
+	for child in Singleton.current_puzzle.find_node("Wire Stuff").get_children():
 		child.handle_connections_dead()
 	for child in Singleton.current_puzzle.get_node("Inputs").get_children():
 		child.handle_connections_dead()

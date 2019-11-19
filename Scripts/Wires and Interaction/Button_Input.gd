@@ -59,7 +59,7 @@ func handle_connection(conn, connPath, parent=true) -> int:
 	return 1
 	
 func handle_connections_dead():
-	if(not get_parent().get_parent().find_node("Wire Stuff").find_node("Wire Holders").has_node(outputConnectionPath) and
+	if(not get_parent().get_parent().find_node("Wire Stuff").has_node(outputConnectionPath) and
 	   not get_parent().get_parent().find_node("Gates").has_node(outputConnectionPath)):
 			remove_connection(outputConnection)
 	

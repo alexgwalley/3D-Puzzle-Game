@@ -50,9 +50,10 @@ func update_map_movement(delta):
 			Singleton.desired_input_pos.y -= move_dif*strength*input_pos_move_snapiness
 		
 			
-	if(Input.is_action_just_pressed("toggle_map") 
+	if((Input.is_action_just_pressed("toggle_map") 
 	or (Singleton.camera_mode == Singleton.MAP_MODE and 
-		Input.is_action_just_pressed("select"))):
+		Input.is_action_just_pressed("select")))
+		and Singleton.gameMode != Singleton.CHECKING_MODE):
 		var selected = get_parent().selected
 		# unselect the Selected block
 		if( selected != null): 	# the object is destructable

@@ -31,6 +31,8 @@ func update_texture():
 		get_node("Border").texture = normal_texture
 		
 func update_number_of_gates_left_GUI():
+	if(Singleton.current_puzzle == null):
+		return
 	if(  type == Singleton.OR_GATE_TYPE):
 		$Label.text = str(Singleton.current_puzzle.numberOfORGates)
 	elif(type == Singleton.AND_GATE_TYPE):

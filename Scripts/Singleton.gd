@@ -19,7 +19,7 @@ var inputMode = 0
 onready var input_pos = get_viewport().size/2
 onready var desired_input_pos = get_viewport().size/2
 
-var current_puzzle
+onready var current_puzzle
 
 const OR_GATE_TYPE  = 0
 const AND_GATE_TYPE = 1
